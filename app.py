@@ -15,9 +15,10 @@ TARGET_TITLES = [
 # Function to search companies
 def search_companies(product):
     url = "https://api.apollo.io/v1/mixed_companies/search"
-    payload = {"api_key": APOLLO_API_KEY, "q_keywords": product}
+    payload = {"q_keywords": product}  # remove api_key from payload
+    headers = {"X-Api-Key": APOLLO_API_KEY}  # pass key in header
     try:
-        res = requests.post(url, json=payload, timeout=15)
+        res = requests.post(url, json=payload, headers=headers, timeout=15)
         if res.status_code != 200:
             st.error(f"Company search error: {res.status_code}")
             st.write(res.text)
@@ -32,9 +33,10 @@ def find_contacts(domain):
     if not domain:
         return []
     url = "https://api.apollo.io/v1/people/search"
-    payload = {"api_key": APOLLO_API_KEY, "q_organization_domains": [domain]}
+    payload = {"q_organization_domains": [domain]}  # remove api_key from payload
+    headers = {"X-Api-Key": APOLLO_API_KEY}  # pass key in header
     try:
-        res = requests.post(url, json=payload, timeout=15)
+        res = requests.post(url, json=payload, headers=headers, timeout=15)
         if res.status_code != 200:
             st.warning(f"Contact search error for {domain}: {res.status_code}")
             return []
